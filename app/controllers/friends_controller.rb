@@ -1,6 +1,6 @@
 class FriendsController < ApplicationController
   before_action :set_friend, only: %i[ show edit update destroy ]
-
+  before_action :output_function, only: %i[ edit update]
   # GET /friends or /friends.json
   def index
     @friends = Friend.all
@@ -61,6 +61,10 @@ class FriendsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_friend
       @friend = Friend.find(params[:id])
+    end
+
+    def output_function
+      @friend.first_name = "I was tested by callback"
     end
 
     # Only allow a list of trusted parameters through.
