@@ -1,6 +1,6 @@
 class FriendsController < ApplicationController
   before_action :set_friend, only: %i[ show edit update destroy ]
-  before_action :output_function, only: %i[ edit update]
+  #before_action :output_function, only: %i[ edit update]
   # GET /friends or /friends.json
   def index
     @friends = Friend.all
@@ -22,7 +22,6 @@ class FriendsController < ApplicationController
   # POST /friends or /friends.json
   def create
     @friend = Friend.new(friend_params)
-
     respond_to do |format|
       if @friend.save
         format.html { redirect_to friend_url(@friend), notice: "Friend was successfully created." }
@@ -69,6 +68,6 @@ class FriendsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def friend_params
-      params.require(:friend).permit(:first_name, :string, :last_name, :email, :phone, :facebook)
+      params.require(:friend).permit(:first_name, :string, :last_name, :email, :phone, :facebook, :friend_with_id)
     end
 end
