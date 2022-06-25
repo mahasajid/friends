@@ -1,7 +1,9 @@
+require "prawn"
 class FriendsController < ApplicationController
   before_action :set_friend, only: %i[ show edit update destroy ]
   #before_action :output_function, only: %i[ edit update]
   # GET /friends or /friends.json
+  after_action :same_name, only: %i[create new update]
   def index
     @friends = Friend.all
   end
@@ -12,18 +14,46 @@ class FriendsController < ApplicationController
 
   # GET /friends/new
   def new
-    @friend = Friend.new
+    @friend = Friend.new(first_name: cookies[:first_name])
   end
 
   # GET /friends/1/edit
   def edit
   end
 
+  def downloadpdf
+    respond_to do |format|
+      # some other formats like: format.html { render :show }
+
+      format.pdf do
+        pdf = Prawn::Document.new
+        pdf.text "#{@friend.first_name} #{@friend.last_name} \n City: #{@friend.city}"
+        send_data pdf.render,
+          filename: "export.pdf",
+          type: 'application/pdf',
+          disposition: 'inline'
+      end
+    end
+
+
+
+
+  #   @friend = Friend.find(params[:id])
+  #   format.pdf{ render  send_data generate_pdf(@friend), 
+  #   file_name: "#{@friend.first_name}.pdf",
+  #   type: 'application/pdf',
+  # disposition: 'inline'}
+    # send_data generate_pdf(@friend), 
+    # file_name: "#{@friend.first_name}.pdf",
+    # type: "application/pdf"
+    #redirect_to friend_url("#{@friend.first_name}.pdf")
+  end
   # POST /friends or /friends.json
   def create
     @friend = Friend.new(friend_params)
     respond_to do |format|
       if @friend.save
+       
         format.html { redirect_to friend_url(@friend), notice: "Friend was successfully created." }
         format.json { render :show, status: :created, location: @friend }
       else
@@ -36,11 +66,15 @@ class FriendsController < ApplicationController
   # PATCH/PUT /friends/1 or /friends/1.json
   def update
     respond_to do |format|
+      flash.now[:notice] = " #{cookies[:first_name]} was last created"
       if @friend.update(friend_params)
         format.html { redirect_to friend_url(@friend), notice: "Friend was successfully updated." }
         format.json { render :show, status: :ok, location: @friend }
       else
         format.html { render :edit, status: :unprocessable_entity }
+        flash[:notice] = "Your last action failed"
+        flash.now[:notice] = "Your current action failed"
+        flash.now[:error] = "Fill the missing fields"
         format.json { render json: @friend.errors, status: :unprocessable_entity }
       end
     end
@@ -66,6 +100,22 @@ class FriendsController < ApplicationController
       @friend.first_name = "I was tested by callback"
     end
 
+    def same_name
+      if Friend.any? { |f| f.first_name == @friend.first_name}
+      #if Friend.find(params[:first_name]).first_name == @friend.first_name
+        flash.now[:notice] ="We have another #{@friend.first_name} in the database"
+      end
+    end
+
+    def generate_pdf(friend)
+      pdf = Prawn:: Document.new do
+        text @friend.first_name
+        text @friend.last_name
+        text "City: #{friend.city}"
+
+      return pdf
+      end
+    end
     # Only allow a list of trusted parameters through.
     def friend_params
       params.require(:friend).permit(:first_name, :string, :last_name, :email, :phone, :facebook, :friend_with_id, :city)
