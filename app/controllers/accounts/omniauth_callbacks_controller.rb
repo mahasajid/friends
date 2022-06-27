@@ -2,9 +2,23 @@
 
 class Accounts::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # You should configure your model like this:
-  # devise :omniauthable, omniauth_providers: [:twitter]
+  skip_before_action :verify_authenticity_token, only: :facebook
+  devise :omniauthable, omniauth_providers: [:facebook]
 
   # You should also create an action method in this controller like this:
+
+  def facebook
+    @account = Account.auth
+    sign_in_and_redirect @account, event: :authentication
+
+    
+  end
+
+  def auth
+    request.env['omniauth.auth']
+  end
+
+  
   # def twitter
   # end
 
@@ -17,9 +31,9 @@ class Accounts::OmniauthCallbacksController < Devise::OmniauthCallbacksControlle
   # end
 
   # GET|POST /users/auth/twitter/callback
-  # def failure
-  #   super
-  # end
+  def failure
+    redirect_to root_path notice: "Successfully Connected †o Facebook"
+  end
 
   # protected
 
