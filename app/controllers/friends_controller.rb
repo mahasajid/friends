@@ -10,6 +10,18 @@ class FriendsController < ApplicationController
 
   # GET /friends/1 or /friends/1.json
   def show
+
+    # @friend = Friend.find(params[:id])
+    # respond_to do |format|
+    #   # some other formats like: format.html { render :show }
+    #   format.html
+    #   format.pdf do
+    #     pdf = Prawn::Document.new
+    #     pdf.text "#{@friend.first_name} #{@friend.last_name} \n City: #{@friend.city}"
+    #     send_data pdf.render,
+    #       filename: "export.pdf",
+    #       type: 'application/pdf'
+    #   end
   end
 
   # GET /friends/new
@@ -22,9 +34,10 @@ class FriendsController < ApplicationController
   end
 
   def downloadpdf
+    @friend = Friend.find(params[:id])
     respond_to do |format|
       # some other formats like: format.html { render :show }
-
+      format.html
       format.pdf do
         pdf = Prawn::Document.new
         pdf.text "#{@friend.first_name} #{@friend.last_name} \n City: #{@friend.city}"
@@ -32,7 +45,9 @@ class FriendsController < ApplicationController
           filename: "export.pdf",
           type: 'application/pdf',
           disposition: 'inline'
+          #redirect_to "friends/:id/export.pdf" , allow_other_host: true
       end
+      
     end
 
 

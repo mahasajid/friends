@@ -5,6 +5,7 @@
 <div>
   <%= link_to "Edit this friend", edit_friend_path(@friend) %> |
   <%= link_to "Back to friends", friends_path %>
+  <%= link_to "View File", "#{@friend.id}/export.pdf" %>
 <%= button_to "View File", @friend, method: :downloadpdf %>
   <%= button_to "Destroy this friend", @friend, method: :delete %>
 </div>
