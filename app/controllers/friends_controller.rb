@@ -37,12 +37,12 @@ class FriendsController < ApplicationController
     @friend = Friend.find(params[:id])
     respond_to do |format|
       # some other formats like: format.html { render :show }
-      format.html
+      #format.html
       format.pdf do
         pdf = Prawn::Document.new
         pdf.text "#{@friend.first_name} #{@friend.last_name} \n City: #{@friend.city}"
         send_data pdf.render,
-          filename: "export.pdf",
+          filename: "#{@friend.first_name}.pdf",
           type: 'application/pdf',
           disposition: 'inline'
           #redirect_to "friends/:id/export.pdf" , allow_other_host: true
