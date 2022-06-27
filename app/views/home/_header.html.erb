@@ -8,21 +8,31 @@
       <span class="navbar-toggler-icon"></span>
     </button>
         <% if account_signed_in? %>
+
          <li class="nav-item"  style="color:#fff">
-        <%= link_to 'Sign Out',  destroy_account_session_path, data: { turbo_method: :delete} , class: "nav-link" %>
+        <%= link_to 'Show Friends', friends_path, class: "nav-link" %>
+            <li class="nav-item">
+        <%= link_to 'Add Friend', new_friend_path, class: "nav-link" %>
+
+        </li>
+
+      
+         <li class="nav-item"  style="color:#fff">
+        <%= link_to 'Sign Out',  destroy_account_session_path, data: { 'turbo-method': :delete } ,class: "nav-link" %>
         </li>
 
         <%else%>
           <li class="nav-item" style="color:#fff">
         <%= link_to 'Sign Up', new_account_registration_path, class: "nav-link" %>
         </li>
+            <li class="nav-item"  style="color:#fff">
+        <%= link_to 'Sign In', new_account_session_path  , class: "nav-link" %>
+        </li>
 
         <%end%>
 
 
-          <li class="nav-item"  style="color:#fff">
-        <%= link_to 'Sign In', new_account_session_path  , class: "nav-link" %>
-        </li>
+      
 
 
          
@@ -33,16 +43,10 @@
         </li>
 
 
-        <li class="nav-item"  style="color:#fff">
-        <%= link_to 'Show Friends', friends_path, class: "nav-link" %>
-            <li class="nav-item">
-        <%= link_to 'Add Friend', new_friend_path, class: "nav-link" %>
-
-        </li>
+       
         <li class="nav-item"  style="color:#fff">
         <%= link_to 'Articles', articles_path, class: "nav-link" %>
             <li class="nav-item">
-        <%= link_to 'Sign In', new_friend_path, class: "nav-link" %>
 
         </li>
     
