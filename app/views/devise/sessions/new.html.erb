@@ -22,7 +22,6 @@
     <%= f.submit "Log in" %>
   </div>
 <% end %>
-<%= link_to "Sign in with Facebook", account_facebook_omniauth_authorize_path, data: { 'turbo-method': :post } %>  <%#this should redirect to facebook and brign credentials back%>
 
 
 <%= render "devise/shared/links" %>

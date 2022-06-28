@@ -3,8 +3,8 @@ class Account < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :omniauthable, :omniauth_providers => [:facebook]
-         has_many :friends 
+         :omniauthable, omniauth_providers: %i[facebook]
+  has_many :friends 
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |account|
