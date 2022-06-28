@@ -8,9 +8,14 @@ class Accounts::OmniauthCallbacksController < Devise::OmniauthCallbacksControlle
   # You should also create an action method in this controller like this:
 
   def facebook
-    @account = Account.auth
-    sign_in_and_redirect @account, event: :authentication
-
+    @account = Account.from_omniauth(request.env["omniauth.auth"])
+    # if @account.persisted?
+    sign_in_and_redirect @account #, event: :authentication 
+    #   set_flash_message(:notice, :success, kind: "Facebook") if is_navigational_format?
+    # else
+    #   session["devise.facebook_data"] = request.env["omniauth.auth"].except(:extra) 
+    #   redirect_to new_user_registration_url
+    # end
     
   end
 

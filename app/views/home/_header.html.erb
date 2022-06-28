@@ -9,11 +9,13 @@
     </button>
         <% if account_signed_in? %>
 
-         <li class="nav-item"  style="color:#fff">
-        <%= link_to 'Show Friends', friends_path, class: "nav-link" %>
-            <li class="nav-item">
+         
+         <li class="nav-item" style="color:#fff">
         <%= link_to 'Add Friend', new_friend_path, class: "nav-link" %>
+        </li>
 
+         <li class="nav-item" style="color:#fff">
+        <%= link_to 'Edit Profile', edit_account_registration_path, class: "nav-link" %>
         </li>
 
       
@@ -32,10 +34,10 @@
         <%end%>
 
 
-      
 
-
-         
+         <li class="nav-item"  style="color:#fff">
+        <%= link_to 'Show Friends', friends_path, class: "nav-link" %>
+            </li>
 
 
         <li class="nav-item"  style="color:#fff">

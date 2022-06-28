@@ -1,6 +1,8 @@
 require "prawn"
 class FriendsController < ApplicationController
   before_action :set_friend, only: %i[ show edit update destroy ]
+  before_action :authenticate_account!, except: [:index, :show]
+  before_action :correct_user, only: [:edit, :update, :destroy]
   #before_action :output_function, only: %i[ edit update]
   # GET /friends or /friends.json
   after_action :same_name, only: %i[create new update]
@@ -26,7 +28,8 @@ class FriendsController < ApplicationController
 
   # GET /friends/new
   def new
-    @friend = Friend.new(first_name: cookies[:first_name])
+    #@friend = Friend.new(first_name: cookies[:first_name])
+    @friend = current_account.friends.build
   end
 
   # GET /friends/1/edit
@@ -65,7 +68,8 @@ class FriendsController < ApplicationController
   end
   # POST /friends or /friends.json
   def create
-    @friend = Friend.new(friend_params)
+   # @friend = Friend.new(friend_params)
+   @friend = current_account.friends.build(friend_params)
     respond_to do |format|
       if @friend.save
        
@@ -105,6 +109,13 @@ class FriendsController < ApplicationController
     end
   end
 
+
+  def correct_user
+    @friend = current_account.friends.find_by(id: params[:id])
+    redirect_to friends_path, notice: "You are not authorized for this action" if @friend.nil?
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_friend
@@ -133,6 +144,6 @@ class FriendsController < ApplicationController
     end
     # Only allow a list of trusted parameters through.
     def friend_params
-      params.require(:friend).permit(:first_name, :string, :last_name, :email, :phone, :facebook, :friend_with_id, :city)
+      params.require(:friend).permit(:first_name, :string, :last_name, :email, :phone, :facebook, :city,  :account_id)
     end
 end

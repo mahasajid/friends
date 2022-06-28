@@ -47,12 +47,9 @@
     <%= form.label :facebook_no, "NO"%>
      <%= form.radio_button :facebook , "no" %>
   </div>
-
-
-    <div>
-
-    <%= form.label :friend_with_id, style: "display: block" %>
-    <%= form.text_field :friend_with %>
+<div>
+    <%= form.number_field :account_id, id: :friend_account_id, class: "form-control", value: current_account.id, type: :hidden %>
+    <%=  %>
   </div>
   <div>
     <%= form.submit %>
