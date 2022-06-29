@@ -16,6 +16,8 @@ gem 'devise', '~> 4.8', '>= 4.8.1'
 gem 'prawn'
 gem 'omniauth-facebook'
 gem 'omniauth-rails_csrf_protection'
+gem 'cancancan'
+
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
 end

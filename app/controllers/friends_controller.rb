@@ -1,11 +1,12 @@
 require "prawn"
 class FriendsController < ApplicationController
+  #authorize_resource except: %i[new, edit]
   before_action :set_friend, only: %i[ show edit update destroy ]
   before_action :authenticate_account!, except: [:index, :show]
   before_action :correct_user, only: [:edit, :update, :destroy]
   #before_action :output_function, only: %i[ edit update]
   # GET /friends or /friends.json
-  after_action :same_name, only: %i[create new update]
+  #after_action :same_name, only: %i[create new update]
   def index
     @friends = Friend.all
   end
@@ -28,12 +29,23 @@ class FriendsController < ApplicationController
 
   # GET /friends/new
   def new
+    #res = Ability.new(current_account)
+    #debugger
     #@friend = Friend.new(first_name: cookies[:first_name])
-    @friend = current_account.friends.build
+    if current_account.admin? 
+      @friend = current_account.friends.build
+    else
+       redirect_to friends_path, notice: "You are not authorized to perform this action"
+    end
+
   end
 
   # GET /friends/1/edit
   def edit
+    unless current_account.admin?
+      redirect_to friends_path, notice: "You are not authorized to perform this action"
+    end
+
   end
 
   def downloadpdf
@@ -101,6 +113,9 @@ class FriendsController < ApplicationController
 
   # DELETE /friends/1 or /friends/1.json
   def destroy
+    unless current_account.admin?
+      redirect_to friends_path, notice: "You are not authorized to perform this action"
+    end
     @friend.destroy
 
     respond_to do |format|
@@ -108,6 +123,7 @@ class FriendsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
 
 
   def correct_user
@@ -126,12 +142,12 @@ class FriendsController < ApplicationController
       @friend.first_name = "I was tested by callback"
     end
 
-    def same_name
-      if Friend.any? { |f| f.first_name == @friend.first_name}
-      #if Friend.find(params[:first_name]).first_name == @friend.first_name
-        flash.now[:notice] ="We have another #{@friend.first_name} in the database"
-      end
-    end
+    # def same_name
+    #   if Friend.any? { |f| f.first_name == @friend.first_name}
+    #   #if Friend.find(params[:first_name]).first_name == @friend.first_name
+    #     flash.now[:notice] ="We have another #{@friend.first_name} in the database"
+    #   end
+    # end
 
     def generate_pdf(friend)
       pdf = Prawn:: Document.new do
@@ -142,6 +158,12 @@ class FriendsController < ApplicationController
       return pdf
       end
     end
+
+      
+
+  # def current_ability
+  #   @current_ability ||= ::Ability.new(current_account)
+  # end
     # Only allow a list of trusted parameters through.
     def friend_params
       params.require(:friend).permit(:first_name, :string, :last_name, :email, :phone, :facebook, :city,  :account_id)
