@@ -82,8 +82,11 @@ class FriendsController < ApplicationController
   def create
    # @friend = Friend.new(friend_params)
    @friend = current_account.friends.build(friend_params)
+   @account = current_account
     respond_to do |format|
       if @friend.save
+
+        AccountMailer.with(account: @account, friend: @friend).new_friend_email.deliver_now
        
         format.html { redirect_to friend_url(@friend), notice: "Friend was successfully created." }
         format.json { render :show, status: :created, location: @friend }
