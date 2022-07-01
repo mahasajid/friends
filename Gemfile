@@ -17,6 +17,9 @@ gem 'prawn'
 gem 'omniauth-facebook'
 gem 'omniauth-rails_csrf_protection'
 gem 'cancancan'
+gem 'ruby-vips', '~> 2.1', '>= 2.1.4'
+gem "image_processing", ">= 1.2"
+
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
