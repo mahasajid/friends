@@ -3,6 +3,16 @@
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
+<!--Image Upload Field-->
+<div class="form-group">
+<label class="col-sm-4 col-form-label">Image:
+<% if current_account.image.present? %><br />Current: <%= current_account.image.filename.to_s %><% end %>
+</label>
+<div class="col-sm-8"><%= f.file_field :image, class: "form-control" %></div>
+</div>
+<!--Image Upload Field-->
+
+
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
@@ -30,6 +40,12 @@
     <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
     <%= f.password_field :current_password, autocomplete: "current-password" %>
   </div>
+
+   <% if current_account.image.present? %>
+<%= image_tag(current_account.image.variant(resize_to_fill: [50, 50]), class: "rounded-circle") %>
+<% else %>
+<img alt="image" class="rounded-circle" src="/assets/default_avatar_small.jpg">
+<% end %>
 
   <div class="actions">
     <%= f.submit "Update" %>
