@@ -6,9 +6,9 @@
 <!--Image Upload Field-->
 <div class="form-group">
 <label class="col-sm-4 col-form-label">Image:
-<% if current_account.image.present? %><br />Current: <%= current_account.image.filename.to_s %><% end %>
+<% if resource.avatar.attached? %><br />Current: <%= resource.avatar.filename.to_s %><% end %>
 </label>
-<div class="col-sm-8"><%= f.file_field :image, class: "form-control" %></div>
+<div class="col-sm-8"><%= f.file_field :avatar, class: "form-control" %></div>
 </div>
 <!--Image Upload Field-->
 
@@ -41,8 +41,8 @@
     <%= f.password_field :current_password, autocomplete: "current-password" %>
   </div>
 
-   <% if current_account.image.present? %>
-<%= image_tag(current_account.image.variant(resize_to_fill: [50, 50]), class: "rounded-circle") %>
+   <% if resource.avatar.attached? %>
+<%= image_tag(resource.avatar, class: "rounded-circle") %>
 <% else %>
 <img alt="image" class="rounded-circle" src="/assets/default_avatar_small.jpg">
 <% end %>
