@@ -10,6 +10,7 @@ gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"
+gem "jquery-rails"
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
 gem 'devise', '~> 4.8', '>= 4.8.1'
@@ -17,6 +18,11 @@ gem 'prawn'
 gem 'omniauth-facebook'
 gem 'omniauth-rails_csrf_protection'
 gem 'cancancan'
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
+end
+
 #gem 'ruby-vips', '~> 2.1', '>= 2.1.4'
 #gem "image_processing", ">= 1.2"
 

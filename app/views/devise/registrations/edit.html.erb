@@ -43,9 +43,12 @@
 
    <% if resource.avatar.attached? %>
 <%= image_tag(resource.avatar, class: "rounded-circle") %>
+
 <% else %>
 <img alt="image" class="rounded-circle" src="/assets/default_avatar_small.jpg">
 <% end %>
+
+
 
   <div class="actions">
     <%= f.submit "Update" %>
